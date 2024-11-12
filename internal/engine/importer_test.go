@@ -8,6 +8,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/format"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -19,7 +20,7 @@ var multiline = cmpopts.AcyclicTransformer("multiline", func(s string) []string 
 })
 
 func TestConvertCRDWithNoSpec(t *testing.T) {
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 	g := NewWithT(t)
 
 	crds := `{
@@ -78,7 +79,7 @@ func TestConvertCRDWithNoSpec(t *testing.T) {
 }
 
 func TestConvertCRD(t *testing.T) {
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 	g := NewWithT(t)
 
 	wrapper := `{
@@ -147,7 +148,7 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo"]
 			`,
 			expect: `{
-	foo: string
+	foo!: string
 }`,
 		},
 		{
@@ -161,7 +162,7 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo"]
 			additionalProperties: false`,
 			expect: `{
-	foo: string
+	foo!: string
 }`,
 		},
 		{
@@ -176,7 +177,7 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo"]
 			`,
 			expect: `{
-	foo: string
+	foo!: string
 	...
 }`,
 		},
@@ -210,8 +211,8 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo", "nest"]
 			`,
 			expect: `{
-	foo: string
-	nest: {
+	foo!: string
+	nest!: {
 		innerField?: string
 		nestnest?: {
 			nestnestnest?: {
@@ -240,8 +241,8 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo", "nest"]
 			`,
 			expect: `{
-	foo: string
-	nest: {
+	foo!: string
+	nest!: {
 		innerField?: string
 	}
 }`,
@@ -264,8 +265,8 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo", "nest"]
 			additionalProperties: false`,
 			expect: `{
-	foo: string
-	nest: {
+	foo!: string
+	nest!: {
 		innerField?: string
 	}
 }`,
@@ -288,8 +289,8 @@ func TestConvertCRD(t *testing.T) {
 			required: ["foo", "nest"]
 			`,
 			expect: `{
-	foo: string
-	nest: {
+	foo!: string
+	nest!: {
 		innerField?: string
 	}
 	...
@@ -328,7 +329,7 @@ func TestConvertCRD(t *testing.T) {
 			expect: `{
 	resources?: {
 		claims?: [...{
-			name: string
+			name!: string
 		}]
 	}
 	spec?: {

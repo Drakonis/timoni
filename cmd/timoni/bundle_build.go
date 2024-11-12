@@ -28,6 +28,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/fluxcd/pkg/ssa"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -97,7 +98,7 @@ func runBundleBuildCmd(cmd *cobra.Command, _ []string) error {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 	bm := engine.NewBundleBuilder(ctx, files)
 
 	runtimeValues := make(map[string]string)

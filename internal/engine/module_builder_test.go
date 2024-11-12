@@ -23,6 +23,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	. "github.com/onsi/gomega"
 
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -35,7 +36,7 @@ func TestModuleBuilder(t *testing.T) {
 	err := CopyModule("testdata/module", moduleRoot)
 	g.Expect(err).ToNot(HaveOccurred())
 
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	mb := NewModuleBuilder(ctx, "test-name", "test-namespace", moduleRoot, "main")
 
@@ -71,7 +72,7 @@ func TestModuleBuilder_InvalidValues(t *testing.T) {
 	err := CopyModule("testdata/module-invalid", moduleRoot)
 	g.Expect(err).ToNot(HaveOccurred())
 
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	mb := NewModuleBuilder(ctx, "test-name", "test-namespace", moduleRoot, "main")
 

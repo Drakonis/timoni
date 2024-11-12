@@ -24,6 +24,7 @@ import (
 	"sort"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/fluxcd/pkg/ssa"
 	"github.com/spf13/cobra"
 
@@ -84,7 +85,7 @@ func runBundleDelCmd(cmd *cobra.Command, args []string) error {
 
 	switch {
 	case bundleDelArgs.filename != "":
-		cuectx := cuecontext.New()
+		cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 		name, err := engine.ExtractStringFromFile(cuectx, bundleDelArgs.filename, apiv1.BundleName.String())
 		if err != nil {
 			return err

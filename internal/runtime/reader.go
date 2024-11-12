@@ -24,6 +24,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/fluxcd/pkg/ssa"
 	ssautil "github.com/fluxcd/pkg/ssa/utils"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -60,7 +61,7 @@ func (r *ResourceReader) Read(ctx context.Context, refs []apiv1.RuntimeResourceR
 			return result, fmt.Errorf("query error for %s: %w", ref.Name, err)
 		}
 
-		ct := cuecontext.New()
+		ct := cuecontext.New(cuecontext.Interpreter(embed.New()))
 		m, err := r.getValues(ct, obj, ref.Expressions)
 		if err != nil {
 			return result, fmt.Errorf("can't extract values from %s: %w", ssautil.FmtUnstructured(obj), err)

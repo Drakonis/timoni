@@ -24,6 +24,7 @@ import (
 	"sort"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/spf13/cobra"
 
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -140,7 +141,7 @@ func buildRuntime(files []string) (*apiv1.Runtime, error) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 	rb := engine.NewRuntimeBuilder(ctx, files)
 
 	if err := rb.InitWorkspace(tmpDir); err != nil {

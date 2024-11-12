@@ -96,6 +96,7 @@ func init() {
 }
 
 func main() {
+	os.Setenv("CUE_EXPERIMENT","embed")
 	setCacheDir()
 	if err := rootCmd.Execute(); err != nil {
 		// Ensure a logger is initialized even if the rootCmd

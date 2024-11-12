@@ -23,6 +23,7 @@ import (
 	"path"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/pkg/strings"
 	ssautil "github.com/fluxcd/pkg/ssa/utils"
 	"github.com/google/go-containerregistry/pkg/name"
@@ -83,7 +84,7 @@ func runVetModCmd(cmd *cobra.Command, args []string) error {
 	}
 
 	log := LoggerFrom(cmd.Context())
-	cuectx := cuecontext.New()
+	cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	tmpDir, err := os.MkdirTemp("", apiv1.FieldManager)
 	if err != nil {

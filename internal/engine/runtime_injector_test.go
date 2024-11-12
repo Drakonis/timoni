@@ -20,13 +20,14 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/parser"
 	. "github.com/onsi/gomega"
 )
 
 func TestInjector_Env(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	t.Setenv("USERNAME", "stefanprodan")
 	key := `-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -93,7 +94,7 @@ secrets: {
 
 func TestInjector_Operand(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	t.Setenv("USERNAME", "stefanprodan")
 	t.Setenv("AGE", "41")

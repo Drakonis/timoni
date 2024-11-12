@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -28,7 +29,7 @@ import (
 
 func TestRuntimeBuilder_Minimal(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	rt := `
 runtime: {
@@ -45,7 +46,7 @@ runtime: {
 
 func TestRuntimeBuilder_Values(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	rt := `
 runtime: {
@@ -101,7 +102,7 @@ runtime: {
 
 func TestRuntimeBuilder_Clusters(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	rt := `
 runtime: {

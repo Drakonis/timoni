@@ -28,6 +28,7 @@ import (
 	"strings"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	ssautil "github.com/fluxcd/pkg/ssa/utils"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/spf13/cobra"
@@ -74,7 +75,7 @@ func runVendorCrdCmd(cmd *cobra.Command, args []string) error {
 	}
 
 	log := LoggerFrom(cmd.Context())
-	cuectx := cuecontext.New()
+	cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	// Make sure we're importing into a CUE module.
 	cueModDir := path.Join(vendorCrdArgs.modRoot, "cue.mod")

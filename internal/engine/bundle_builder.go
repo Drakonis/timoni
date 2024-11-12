@@ -25,6 +25,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/load"
 	"cuelang.org/go/cue/parser"
 	"cuelang.org/go/encoding/json"
@@ -59,7 +60,7 @@ type BundleInstance struct {
 // NewBundleBuilder creates a BundleBuilder for the given module and package.
 func NewBundleBuilder(ctx *cue.Context, files []string) *BundleBuilder {
 	if ctx == nil {
-		ctx = cuecontext.New()
+		ctx = cuecontext.New(cuecontext.Interpreter(embed.New()))
 	}
 	b := &BundleBuilder{
 		ctx:               ctx,

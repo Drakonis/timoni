@@ -20,12 +20,13 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	. "github.com/onsi/gomega"
 )
 
 func TestGetBundle(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	t.Run("Get bundle with quoted instance", func(t *testing.T) {
 		bundle := `

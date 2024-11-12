@@ -29,6 +29,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/load"
 
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -59,7 +60,7 @@ type ModuleBuilder struct {
 // NewModuleBuilder creates a ModuleBuilder for the given module and package.
 func NewModuleBuilder(ctx *cue.Context, name, namespace, moduleRoot, pkgName string) *ModuleBuilder {
 	if ctx == nil {
-		ctx = cuecontext.New()
+		ctx = cuecontext.New(cuecontext.Interpreter(embed.New()))
 	}
 	b := &ModuleBuilder{
 		ctx:           ctx,

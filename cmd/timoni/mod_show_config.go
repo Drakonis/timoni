@@ -30,6 +30,7 @@ import (
 	"strings"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -79,7 +80,7 @@ func runConfigShowModCmd(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("module not found at path %s", configShowModArgs.path)
 	}
 
-	cuectx := cuecontext.New()
+	cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	tmpDir, err := os.MkdirTemp("", apiv1.FieldManager)
 	if err != nil {

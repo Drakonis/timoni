@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/fluxcd/cli-utils/pkg/kstatus/status"
 	"github.com/spf13/cobra"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -66,7 +67,7 @@ func runBundleStatusCmd(cmd *cobra.Command, args []string) error {
 
 	switch {
 	case bundleStatusArgs.filename != "":
-		cuectx := cuecontext.New()
+		cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 		name, err := engine.ExtractStringFromFile(cuectx, bundleStatusArgs.filename, apiv1.BundleName.String())
 		if err != nil {
 			return err

@@ -28,6 +28,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 
@@ -125,7 +126,7 @@ func runBundleApplyCmd(cmd *cobra.Command, _ []string) error {
 	ctx, cancel := context.WithTimeout(cmd.Context(), rootArgs.timeout)
 	defer cancel()
 
-	cuectx := cuecontext.New()
+	cuectx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 	bm := engine.NewBundleBuilder(cuectx, files)
 
 	runtimeValues := make(map[string]string)

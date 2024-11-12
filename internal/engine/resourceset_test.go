@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	. "github.com/onsi/gomega"
 
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -27,7 +28,7 @@ import (
 
 func TestGetResources(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	steps, err := ExtractValueFromFile(ctx, "testdata/api/apply-steps.cue", apiv1.ApplySelector.String())
 	g.Expect(err).ToNot(HaveOccurred())

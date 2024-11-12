@@ -24,6 +24,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/format"
 	"cuelang.org/go/cue/load"
 	"cuelang.org/go/cue/parser"
@@ -43,7 +44,7 @@ type RuntimeBuilder struct {
 // NewRuntimeBuilder creates a RuntimeBuilder for the given module and package.
 func NewRuntimeBuilder(ctx *cue.Context, files []string) *RuntimeBuilder {
 	if ctx == nil {
-		ctx = cuecontext.New()
+		ctx = cuecontext.New(cuecontext.Interpreter(embed.New()))
 	}
 	b := &RuntimeBuilder{
 		ctx:             ctx,

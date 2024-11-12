@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue/cuecontext"
+   "cuelang.org/go/cue/interpreter/embed"
 	. "github.com/onsi/gomega"
 
 	apiv1 "github.com/stefanprodan/timoni/api/v1alpha1"
@@ -35,7 +36,7 @@ func mustReadFile(g Gomega, path string) []byte {
 
 func TestValuesBuilder(t *testing.T) {
 	g := NewWithT(t)
-	ctx := cuecontext.New()
+	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
 
 	vb := NewValuesBuilder(ctx)
 
